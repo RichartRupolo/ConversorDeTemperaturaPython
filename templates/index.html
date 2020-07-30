@@ -1,0 +1,79 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div class="row">
+        <header>
+            <h1>Conversor de temperatura</h1>
+
+        </header>
+        <form action="#">
+            <div class="row">
+                <label for="unidadeOrigem">Temperatura Origem</label><br>
+                <select id="unidadeOrigem" name="unidadeOrigem">
+                    <option value="" selected>Selecione...</option>
+
+                    <option value="C">Celsius</option>
+                    <option value="K">Kelvin</option>
+                    <option value="F">Farenheit</option>
+                </select>
+
+            </div>
+            <div class="row">
+                <label for="unidadeDestino">Temperatura convertida</label><br>
+                <select id="unidadeDestino" name="unidadeDestino">
+                    <option value="" selected>Selecione...</option>
+                    <option value="C">Celsius</option>
+                    <option value="K">Kelvin</option>
+                    <option value="F">Farenheit</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <input type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="valor">
+                <label for="valor">Temperatura</label>
+            </div>
+            <button id="converter">
+                Converter
+            </button>
+        </form>
+        <div style="margin: 10px; height: 25px;">
+            Temperatura convertida<br>
+            <span  id="temperaturaConvertida"></span>
+          </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    $(document).ready(function () {
+
+        // Listen for Check button click
+        $("#converter").click(function (event) {
+            event.preventDefault();
+            console.log($('#unidadeOrigem').val());
+            console.log($('#unidadeDestino').val());
+            console.log($('#valor').val());
+
+            $.post("/converte_temperatura/", {
+                unidadeOrigem: $('#unidadeOrigem').val(),
+                unidadeDestino: $('#unidadeDestino').val(),
+                valor: $('#valor').val()
+            })
+                .done(function (data) {
+                    $("#temperaturaConvertida").html(data['valorConvertido']);
+                   
+                });
+        });
+    });
+</script>
